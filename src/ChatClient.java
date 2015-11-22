@@ -42,8 +42,6 @@ public class ChatClient {
 		
 		out.println("IDEN " + username);
 		String response = readLine();
-		readLine();
-		readLine();
 		
 		if (response == null) {
 			return false;
@@ -68,8 +66,10 @@ public class ChatClient {
 		
 		out.println("LIST");
 		String response = readLine();
-		response = response.substring(response.indexOf("OK") + 3);
-		users = response.split(", ");
+		if (response != null) {
+			response = response.substring(response.indexOf("OK") + 3);
+			users = response.split(", ");
+		}
 		
 		return users;
 	}
@@ -82,7 +82,7 @@ public class ChatClient {
 		return isLoggedIn;
 	}
 	
-	public String readLine() {
+	private String readLine() {
 		try {
 			return in.readLine();
 		} catch (IOException e) {

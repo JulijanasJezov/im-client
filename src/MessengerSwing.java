@@ -78,23 +78,20 @@ public class MessengerSwing extends JFrame {
 		Thread manageUsers = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				DefaultListModel<String> listModel = new DefaultListModel<String>();
-				for(String user : chatClient.list()) {
-					listModel.addElement(user);
-				}
-				listUsers.setModel(listModel);
-				
 				while(true) {
-					String message = chatClient.readLine();
+					DefaultListModel<String> listModel = new DefaultListModel<String>();
+					String[] users = chatClient.list();
+					if (users != null) {
+						for(String user : users) {
+							listModel.addElement(user);
+						}
+						listUsers.setModel(listModel);
+					}
 					
-					if(message != null && message.indexOf("joined:") != -1) {
-						String user = message.substring(message.indexOf(": ") + 2);
-						listModel.addElement(user);
-						listUsers.setModel(listModel);
-					} else if (message != null && message.indexOf("left:") != -1) {
-						String user = message.substring(message.indexOf(": ") + 2);
-						listModel.removeElement(user);
-						listUsers.setModel(listModel);
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 				}
 			}

@@ -49,11 +49,11 @@ public class LoginSwing extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				if (!chatClient.isLoggedIn()) {
 					chatClient.quit();
-					System.exit(0);
 				}
 			}
 		});
 		
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 250);
 		contentPane = new JPanel();
@@ -79,7 +79,7 @@ public class LoginSwing extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.setName("btnLogin");
 		btnLogin.setFont(new Font("Corbel", Font.PLAIN, 18));
-		btnLogin.setBounds(148, 107, 128, 34);
+		btnLogin.setBounds(148, 104, 128, 34);
 		contentPane.add(btnLogin);
 		
 		final JLabel lblFailedToConnect = new JLabel("Failed to connect to the server");
@@ -89,24 +89,38 @@ public class LoginSwing extends JFrame {
 		lblFailedToConnect.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblFailedToConnect.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFailedToConnect.setFont(new Font("Corbel", Font.PLAIN, 12));
-		lblFailedToConnect.setBounds(224, 191, 200, 20);
+		lblFailedToConnect.setBounds(234, 190, 200, 20);
 		contentPane.add(lblFailedToConnect);
+		
+		JLabel lblValUsername = new JLabel("Username is required");
+		lblValUsername.setVisible(false);
+		lblValUsername.setForeground(Color.RED);
+		lblValUsername.setFont(new Font("Corbel", Font.PLAIN, 12));
+		lblValUsername.setBounds(286, 80, 118, 14);
+		contentPane.add(lblValUsername);
 		
 
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String username = txtFieldUsername.getText();
+				if (username == null || username.trim().equals("")) {
+					lblValUsername.setVisible(true);
+					return;
+				}
+				
 				if (!chatClient.isServerConnectionEstablished()) {
 					lblFailedToConnect.setVisible(true);
 					chatClient.connectToServer();
-				} else {
-					lblFailedToConnect.setVisible(false);
-					boolean loggedIn = chatClient.login(txtFieldUsername.getText());
+				}
+				
+				lblValUsername.setVisible(false);
+				
+				boolean loggedIn = chatClient.login(username);
 					
-					if (loggedIn) {
-						MessengerSwing messenger = new MessengerSwing();
-						frame.dispose();
-						messenger.setVisible(true);
-					}
+				if (loggedIn) {
+					MessengerSwing messenger = new MessengerSwing();
+					frame.dispose();
+					messenger.setVisible(true);
 				}
 			}
 		});

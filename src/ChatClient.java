@@ -32,6 +32,9 @@ public class ChatClient {
 	}
 	
 	public boolean login(String username) {
+		checkServerConnection();
+		if (!serverConnection) return false;
+		
 		if (username == null || username.trim().equals("")) {
 			return false;
 		}
@@ -48,6 +51,9 @@ public class ChatClient {
 	}
 	
 	public void quit() {
+		checkServerConnection();
+		if (!serverConnection) return;
+		
 		out.println("QUIT");
 		readLine();
 	}
@@ -66,6 +72,12 @@ public class ChatClient {
 		} catch (IOException e) {
 			serverConnection = false;
 			return null;
+		}
+	}
+	
+	private void checkServerConnection() {
+		if (out == null || in == null) {
+			serverConnection = false;
 		}
 	}
 	

@@ -1,4 +1,4 @@
-GH_TOKEN = 038a1052519222dc31b94323137ed6d562a5fa9d
+GH_TOKEN = "038a1052519222dc31b94323137ed6d562a5fa9d"
 if [ "$TRAVIS_BRANCH" != "test" ]; then     
 	exit 0;
 fi

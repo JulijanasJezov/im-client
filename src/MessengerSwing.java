@@ -12,10 +12,13 @@ import javax.swing.JList;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
+import javax.swing.ListSelectionModel;
+
 import java.awt.Font;
 
 public class MessengerSwing extends JFrame {
@@ -44,18 +47,20 @@ public class MessengerSwing extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JList listUsers = new JList();
+		final JList<String> listUsers = new JList<String>();
 		listUsers.setBounds(10, 34, 143, 391);
+		listUsers.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		listUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		contentPane.add(listUsers);
 		
 		txtFieldMessage = new JTextField();
-		txtFieldMessage.setBounds(163, 399, 321, 26);
+		txtFieldMessage.setBounds(163, 399, 311, 26);
 		contentPane.add(txtFieldMessage);
 		txtFieldMessage.setColumns(10);
 		
 		JButton btnSend = new JButton("Send");
 		btnSend.setFont(new Font("Corbel", Font.PLAIN, 12));
-		btnSend.setBounds(492, 399, 57, 26);
+		btnSend.setBounds(484, 399, 65, 26);
 		contentPane.add(btnSend);
 		
 		JLabel lblUsers = new JLabel("Users");
@@ -76,5 +81,26 @@ public class MessengerSwing extends JFrame {
 		lblChat.setFont(new Font("Corbel", Font.PLAIN, 12));
 		lblChat.setBounds(163, 11, 46, 14);
 		contentPane.add(lblChat);
+		
+		Thread getUsers = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(true) {
+					DefaultListModel<String> listModel = new DefaultListModel<String>();
+					for(String user : chatClient.list()) {
+						listModel.addElement(user);
+					}
+					listUsers.setModel(listModel);
+					
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+	    }, "get users");
+		getUsers.start();
+
 	}
 }

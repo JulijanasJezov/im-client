@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 public class ChatClient {
 	private static ChatClient instance = null;
@@ -58,6 +59,19 @@ public class ChatClient {
 		readLine();
 	}
 	
+	public String[] list() {
+		String[] users = null;
+		checkServerConnection();
+		if (!serverConnection) return users;
+		
+		out.println("LIST");
+		String response = readLine();
+		response = response.substring(response.indexOf("OK") + 3);
+		users = response.split(", ");
+		
+		return users;
+	}
+	
 	public boolean isServerConnectionEstablished() {
 		return serverConnection;
 	}
@@ -90,6 +104,7 @@ public class ChatClient {
 			out = new PrintWriter(socket.getOutputStream(), true);
 			
 			serverConnection = true;
+			readLine();
 		} catch (UnknownHostException uhe) {
 			System.out.println("Failed to connect to the server at " + HOST + PORT);
 		} catch (IOException ioe) {

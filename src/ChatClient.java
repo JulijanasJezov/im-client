@@ -42,6 +42,8 @@ public class ChatClient {
 		
 		out.println("IDEN " + username);
 		String response = readLine();
+		readLine();
+		readLine();
 		
 		if (response == null) {
 			return false;
@@ -80,7 +82,7 @@ public class ChatClient {
 		return isLoggedIn;
 	}
 	
-	private String readLine() {
+	public String readLine() {
 		try {
 			return in.readLine();
 		} catch (IOException e) {

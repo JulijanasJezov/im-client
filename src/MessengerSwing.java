@@ -1,22 +1,15 @@
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
-import javax.swing.JScrollPane;
 import javax.swing.JList;
-import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 
 import java.awt.Font;
@@ -82,25 +75,30 @@ public class MessengerSwing extends JFrame {
 		lblChat.setBounds(163, 11, 46, 14);
 		contentPane.add(lblChat);
 		
-		Thread getUsers = new Thread(new Runnable() {
+		Thread manageUsers = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				DefaultListModel<String> listModel = new DefaultListModel<String>();
+				for(String user : chatClient.list()) {
+					listModel.addElement(user);
+				}
+				listUsers.setModel(listModel);
+				
 				while(true) {
-					DefaultListModel<String> listModel = new DefaultListModel<String>();
-					for(String user : chatClient.list()) {
-						listModel.addElement(user);
-					}
-					listUsers.setModel(listModel);
+					String message = chatClient.readLine();
 					
-					try {
-						Thread.sleep(5000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					if(message != null && message.indexOf("joined:") != -1) {
+						String user = message.substring(message.indexOf(": ") + 2);
+						listModel.addElement(user);
+						listUsers.setModel(listModel);
+					} else if (message != null && message.indexOf("left:") != -1) {
+						String user = message.substring(message.indexOf(": ") + 2);
+						listModel.removeElement(user);
+						listUsers.setModel(listModel);
 					}
 				}
 			}
-	    }, "get users");
-		getUsers.start();
-
+	    }, "manage users");
+		manageUsers.start();
 	}
 }

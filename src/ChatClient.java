@@ -17,6 +17,7 @@ public class ChatClient {
 	private static Socket socket;
 	final static int PORT = 9000;
 	final static String HOST = "localhost";
+	private Thread listener;
 	
 	private boolean isLoggedIn;
 	
@@ -48,7 +49,29 @@ public class ChatClient {
 		} 
 		
 		isLoggedIn = true;
+		setupListener();
 		return true;
+	}
+	
+	private void setupListener() {
+		listener = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(true) {
+					String message = readLine();
+					if (message != null && message.indexOf(",") != -1) {
+						message = message.substring(message.indexOf("OK") + 3);
+						String [] users = message.split(", ");
+						MessengerSwing.addUsersToList(users);
+					}
+					
+					if (message != null && message.indexOf("Broadcast from") != -1) {
+						MessengerSwing.addBroadcastMessage(message);
+					} 
+				}
+			}
+	    }, "listener");
+		listener.start();
 	}
 	
 	public void quit() {
@@ -59,19 +82,19 @@ public class ChatClient {
 		readLine();
 	}
 	
-	public String[] list() {
+	public void list() {
 		String[] users = null;
 		checkServerConnection();
-		if (!serverConnection) return users;
+		if (!serverConnection) return;
 		
 		out.println("LIST");
-		String response = readLine();
-		if (response != null) {
-			response = response.substring(response.indexOf("OK") + 3);
-			users = response.split(", ");
-		}
+	}
+	
+	public void hail(String message) {
+		checkServerConnection();
+		if (!serverConnection) return;
 		
-		return users;
+		out.println("HAIL " + message);
 	}
 	
 	public boolean isServerConnectionEstablished() {
@@ -82,7 +105,7 @@ public class ChatClient {
 		return isLoggedIn;
 	}
 	
-	private String readLine() {
+	public String readLine() {
 		try {
 			return in.readLine();
 		} catch (IOException e) {

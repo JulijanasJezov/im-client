@@ -9,10 +9,12 @@
   <property name="test"  location="test"/>
   <property name="junit" location="lib/junit-4.12.jar"/>
   <property name="hamcrest" location="lib/hamcrest-core-1.3.jar"/>
+  <property name "assertj" location "lib/assertj-swing-3.0.2.jar"/>
 
   <path id="classpath.test">
     <pathelement location="${junit}" />
     <pathelement location="${hamcrest}" />
+    <pathelement location="${assertj}" />
     <pathelement location="${test}" />
     <pathelement location="${build}/main"/>
     <pathelement location="${build}/test"/>

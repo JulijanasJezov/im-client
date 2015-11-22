@@ -82,7 +82,7 @@ public class LoginSwing extends JFrame {
 		btnLogin.setBounds(148, 107, 128, 34);
 		contentPane.add(btnLogin);
 		
-		JLabel lblFailedToConnect = new JLabel("Failed to connect to the server");
+		final JLabel lblFailedToConnect = new JLabel("Failed to connect to the server");
 		lblFailedToConnect.setName("lblFailed");
 		lblFailedToConnect.setVisible(false);
 		lblFailedToConnect.setForeground(Color.RED);

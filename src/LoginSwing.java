@@ -18,13 +18,9 @@ public class LoginSwing extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtFieldUsername;
-	private boolean serverConnectionEstablished;
 	private ChatClient chatClient;
 	private static LoginSwing frame;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -38,9 +34,6 @@ public class LoginSwing extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public LoginSwing() {
 		chatClient = ChatClient.getInstance();
 		
@@ -53,6 +46,7 @@ public class LoginSwing extends JFrame {
 			}
 		});
 		
+		setTitle("Login");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 250);
@@ -63,6 +57,7 @@ public class LoginSwing extends JFrame {
 		contentPane.setLayout(null);
 		
 		txtFieldUsername = new JTextField();
+		txtFieldUsername.setName("txtFieldUsername");
 		txtFieldUsername.setToolTipText("");
 		txtFieldUsername.setBounds(148, 76, 128, 20);
 		contentPane.add(txtFieldUsername);

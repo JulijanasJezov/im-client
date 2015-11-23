@@ -24,9 +24,7 @@ public class MessengerSwing extends JFrame {
 	private static JList<String> listUsers;
 	private static JList<String> listChat;
 	private static DefaultListModel<String> chatListModel;
-	/**
-	 * Create the frame.
-	 */
+
 	public MessengerSwing() {
 		chatListModel = new DefaultListModel<String>();
 		chatClient = ChatClient.getInstance();
@@ -39,6 +37,7 @@ public class MessengerSwing extends JFrame {
 			}
 		});
 		
+		setTitle("Messenger");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 575, 475);
 		contentPane = new JPanel();

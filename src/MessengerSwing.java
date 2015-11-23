@@ -4,6 +4,9 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.text.DefaultCaret;
 import javax.swing.JList;
 import javax.swing.JTextArea;
 import javax.swing.DefaultListModel;
@@ -15,6 +18,7 @@ import javax.swing.ListSelectionModel;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class MessengerSwing extends JFrame {
 
@@ -22,11 +26,12 @@ public class MessengerSwing extends JFrame {
 	private ChatClient chatClient;
 	private JTextField txtFieldMessage;
 	private static JList<String> listUsers;
-	private static JList<String> listChat;
-	private static DefaultListModel<String> chatListModel;
+	private static DefaultListModel<String> listModel;
+	private static JTextArea textAreaChat;
+	private String pmUser;
 
 	public MessengerSwing() {
-		chatListModel = new DefaultListModel<String>();
+		listModel = new DefaultListModel<String>();
 		chatClient = ChatClient.getInstance();
 		
 		addWindowListener(new WindowAdapter() {
@@ -45,12 +50,6 @@ public class MessengerSwing extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		listUsers = new JList<String>();
-		listUsers.setBounds(10, 34, 143, 391);
-		listUsers.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		listUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		contentPane.add(listUsers);
-		
 		txtFieldMessage = new JTextField();
 		txtFieldMessage.setBounds(163, 399, 311, 26);
 		contentPane.add(txtFieldMessage);
@@ -61,13 +60,22 @@ public class MessengerSwing extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String message = txtFieldMessage.getText();
 				if (message != null && !message.trim().equals("")) {
-					chatClient.hail(message);
+					txtFieldMessage.setText("");
+					if (message.startsWith("PM ")) {
+						addBroadcastMessage(message);
+						message = message.substring(message.indexOf(':') + 1);
+						chatClient.mesg(pmUser, message);
+					} else {
+						chatClient.hail(message);
+					}
 				}
 			}
 		});
 		btnSend.setFont(new Font("Corbel", Font.PLAIN, 12));
 		btnSend.setBounds(484, 399, 65, 26);
 		contentPane.add(btnSend);
+		
+		getRootPane().setDefaultButton(btnSend);
 		
 		JLabel lblUsers = new JLabel("Users");
 		lblUsers.setFont(new Font("Corbel", Font.PLAIN, 12));
@@ -84,10 +92,36 @@ public class MessengerSwing extends JFrame {
 		lblChat.setBounds(163, 11, 46, 14);
 		contentPane.add(lblChat);
 		
-		listChat = new JList<String>();
-		listChat.setBounds(163, 34, 386, 334);
-		listChat.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		contentPane.add(listChat);
+		JScrollPane scrollPaneChat = new JScrollPane();
+		scrollPaneChat.setBounds(163, 34, 386, 329);
+		contentPane.add(scrollPaneChat);
+		
+		textAreaChat = new JTextArea();
+		textAreaChat.setLineWrap(true);
+		DefaultCaret caret = (DefaultCaret)textAreaChat.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		scrollPaneChat.setViewportView(textAreaChat);
+		
+		JScrollPane scrollPaneUsers = new JScrollPane();
+		scrollPaneUsers.setBounds(10, 34, 143, 391);
+		contentPane.add(scrollPaneUsers);
+		
+		listUsers = new JList<String>();
+		scrollPaneUsers.setViewportView(listUsers);
+		listUsers.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		listUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		listUsers.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent arg0) {
+            	int selectionIndex = listUsers.getSelectedIndex();
+                if (selectionIndex != -1) {
+                	pmUser = listUsers.getSelectedValue().toString();
+                	txtFieldMessage.setText("PM " + pmUser +": ");
+                }
+                listUsers.clearSelection();
+            }
+        });
 		
 		Thread manageUsers = new Thread(new Runnable() {
 			@Override
@@ -96,7 +130,7 @@ public class MessengerSwing extends JFrame {
 					chatClient.list();
 					
 					try {
-						Thread.sleep(100);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -104,37 +138,25 @@ public class MessengerSwing extends JFrame {
 			}
 	    }, "manage users");
 		manageUsers.start();
-		
-		/*Thread listenForBroadcast = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				DefaultListModel<String> chatListModel = new DefaultListModel<String>();
-				while(true) {
-					String message = chatClient.readLine();
-					
-					if (message != null && message.indexOf("Broadcast from") != -1) {
-						String newMessage = message.substring(message.indexOf("from " + 5));
-						chatListModel.addElement(newMessage);
-						listChat.setModel(chatListModel);
-					} 
-				}
-			}
-	    }, "listen for messages");
-		listenForBroadcast.start();*/
 	}
 	
 	public static void addUsersToList(String[] users) {
-		DefaultListModel<String> listModel = new DefaultListModel<String>();
+		DefaultListModel<String> tempListModel = new DefaultListModel<String>();
 		if (users != null) {
 			for(String user : users) {
-				listModel.addElement(user);
+				tempListModel.addElement(user);
 			}
-			listUsers.setModel(listModel);
+			if (!listModel.contains(tempListModel)) 
+			{
+				listModel = tempListModel;
+				listUsers.setModel(listModel);
+			}
+			
 		}
 	}
 	
 	public static void addBroadcastMessage(String message) {
-		chatListModel.addElement(message);
-		listChat.setModel(chatListModel);
+		textAreaChat.append(message + System.lineSeparator());
+		textAreaChat.setCaretPosition(textAreaChat.getDocument().getLength());
 	}
 }

@@ -68,6 +68,10 @@ public class ChatClient {
 					if (message != null && message.indexOf("Broadcast from") != -1) {
 						MessengerSwing.addBroadcastMessage(message);
 					} 
+					
+					if (message != null && message.startsWith("PM from")) {
+						MessengerSwing.addBroadcastMessage(message);
+					}
 				}
 			}
 	    }, "listener");
@@ -88,6 +92,13 @@ public class ChatClient {
 		if (!serverConnection) return;
 		
 		out.println("LIST");
+	}
+	
+	public void mesg(String user, String message) {
+		checkServerConnection();
+		if (!serverConnection) return;
+		
+		out.println("MESG " + user + " " + message);
 	}
 	
 	public void hail(String message) {

@@ -88,6 +88,7 @@ public class LoginSwing extends JFrame {
 		contentPane.add(lblFailedToConnect);
 		
 		final JLabel lblValUsername = new JLabel("Username is required");
+		lblValUsername.setName("lblValUsername");
 		lblValUsername.setVisible(false);
 		lblValUsername.setForeground(Color.RED);
 		lblValUsername.setFont(new Font("Corbel", Font.PLAIN, 12));

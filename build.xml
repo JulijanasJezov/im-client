@@ -45,7 +45,7 @@
       <batchtest fork="yes" todir="tres">
         <formatter type="brief" usefile="false"/>
         <fileset dir="${test}">
-          <include name="**/*Test*.java"/>
+          <include name="**/*Test.java"/>
         </fileset>
       </batchtest>
     </junit>

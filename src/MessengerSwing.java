@@ -43,6 +43,7 @@ public class MessengerSwing extends JFrame {
 		});
 		
 		setTitle("Messenger");
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 575, 475);
 		contentPane = new JPanel();
@@ -51,11 +52,13 @@ public class MessengerSwing extends JFrame {
 		contentPane.setLayout(null);
 		
 		txtFieldMessage = new JTextField();
+		txtFieldMessage.setName("txtFieldMessage");
 		txtFieldMessage.setBounds(163, 399, 311, 26);
 		contentPane.add(txtFieldMessage);
 		txtFieldMessage.setColumns(10);
 		
 		JButton btnSend = new JButton("Send");
+		btnSend.setName("btnSend");
 		btnSend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String message = txtFieldMessage.getText();
@@ -78,16 +81,19 @@ public class MessengerSwing extends JFrame {
 		getRootPane().setDefaultButton(btnSend);
 		
 		JLabel lblUsers = new JLabel("Users");
+		lblUsers.setName("lblUsers");
 		lblUsers.setFont(new Font("Corbel", Font.PLAIN, 12));
 		lblUsers.setBounds(10, 11, 46, 14);
 		contentPane.add(lblUsers);
 		
 		JLabel lblMessage = new JLabel("Message");
+		lblMessage.setName("lblMessage");
 		lblMessage.setFont(new Font("Corbel", Font.PLAIN, 12));
 		lblMessage.setBounds(163, 374, 46, 14);
 		contentPane.add(lblMessage);
 		
 		JLabel lblChat = new JLabel("Chat");
+		lblChat.setName("lblChat");
 		lblChat.setFont(new Font("Corbel", Font.PLAIN, 12));
 		lblChat.setBounds(163, 11, 46, 14);
 		contentPane.add(lblChat);
@@ -98,6 +104,7 @@ public class MessengerSwing extends JFrame {
 		
 		textAreaChat = new JTextArea();
 		textAreaChat.setLineWrap(true);
+		textAreaChat.setName("textAreaChat");
 		DefaultCaret caret = (DefaultCaret)textAreaChat.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		scrollPaneChat.setViewportView(textAreaChat);
@@ -107,6 +114,7 @@ public class MessengerSwing extends JFrame {
 		contentPane.add(scrollPaneUsers);
 		
 		listUsers = new JList<String>();
+		listUsers.setName("listUsers");
 		scrollPaneUsers.setViewportView(listUsers);
 		listUsers.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		listUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -151,7 +159,6 @@ public class MessengerSwing extends JFrame {
 				listModel = tempListModel;
 				listUsers.setModel(listModel);
 			}
-			
 		}
 	}
 	

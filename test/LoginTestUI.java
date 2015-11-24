@@ -31,14 +31,15 @@ public class LoginTestUI {
 	    });
 	    
 	    window = new FrameFixture(frame);
+	    window.show();
 	  }
 
 	  @Test
 	  public void test_initialWindow() {
-		  String result = window.textBox("txtFieldUsername").text();
-		  assertTrue("checking the username textbox is empty", result.equals(""));
-		  assertEquals("checking the login button text", "Login", window.button("btnLogin").text());
-		  assertEquals("checking the username label text", "Username", window.label("lblUsername").text());
+		  String result = window.textBox("txtFieldMessage").text();
+		  assertTrue("checking the message textbox is empty", result.equals(""));
+		  assertEquals("checking the send button text", "Send", window.button("btnLSend").text());
+		  assertEquals("checking the list label text", "Users", window.label("lblUsers").text());
 	  }
 	  
 	  @After

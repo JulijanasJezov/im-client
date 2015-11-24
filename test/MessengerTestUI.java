@@ -14,7 +14,7 @@ public class MessengerTestUI {
 
 	private FrameFixture window;
 	
-	@BeforeClass
+	  @BeforeClass
 	  public static void initialise() {
 	    FailOnThreadViolationRepaintManager.install();
 	  }

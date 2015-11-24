@@ -64,6 +64,11 @@ public class MessengerSwing extends JFrame {
 				String message = txtFieldMessage.getText();
 				if (message != null && !message.trim().equals("")) {
 					txtFieldMessage.setText("");
+					if (!chatClient.isServerConnectionEstablished()) {
+						addBroadcastMessage("You have been disconnected from the server");
+						return;
+					}
+					
 					if (message.startsWith("PM ")) {
 						addBroadcastMessage(message);
 						message = message.substring(message.indexOf(':') + 1);

@@ -14,6 +14,7 @@ import org.junit.Test;
 public class ChatClientTest {
 
 	private static ChatClient chatClient;
+    private Server server;
 	
 	@BeforeClass
 	public static void init() {
@@ -29,17 +30,19 @@ public class ChatClientTest {
 
 	@Test
 	public void test_loggedIn() throws IOException, InterruptedException {
-		Path currentRelativePath = Paths.get(""); 
-		String s = currentRelativePath.toAbsolutePath().toString(); 
-		System.out.println("Current relative path is: " + s);
-		Process proc = Runtime.getRuntime().exec("java -jar " + s + "/chatServer.jar");
+		Thread serverRun = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				server = new Server(9000, false);
+			}
+	    }, "manage users");
+		serverRun.start();
+		
 		chatClient.connectToServer();
 		
 		chatClient.login("testUser");
 		
 		assertTrue("checking if the user logged in", chatClient.isLoggedIn());
-		
-		proc.destroy();
 	}
 	
 }

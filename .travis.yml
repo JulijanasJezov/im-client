@@ -4,4 +4,4 @@ jdk:
 notifications:
   email: false
 before_install:
-  - java jar chatServer.jar
+  - javac jar chatServer.jar

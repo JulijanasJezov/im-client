@@ -52,4 +52,9 @@ public class ChatClientTest {
 		assertTrue("checking if the user logged in", chatClient.isLoggedIn());
 	}
 	
+	@Test
+	public void test_list() {
+		chatClient.list();
+	}
+	
 }

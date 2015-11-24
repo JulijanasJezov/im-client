@@ -13,10 +13,24 @@ import org.junit.Test;
 public class MessengerTestUI {
 
 	private FrameFixture window;
+	private static Server server;
+	private static ChatClient chatClient;
 	
 	  @BeforeClass
-	  public static void initialise() {
+	  public static void initialise() throws InterruptedException {
 	    FailOnThreadViolationRepaintManager.install();
+	    chatClient = ChatClient.getInstance();
+		assertFalse("checking if the connection is established", chatClient.isServerConnectionEstablished());
+		
+		Thread serverRun = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				server = new Server(9000, false);
+			}
+	    }, "manage users");
+		serverRun.start();
+		
+		Thread.sleep(1000); // Allow some time for server to start
 	  }
 
 	  @Before
@@ -43,6 +57,16 @@ public class MessengerTestUI {
 		  String[] usersArray = window.list("listUsers").contents();
 		  assertTrue("checking the list is empty", usersArray.length == 0);
 		  assertTrue("checking the chat is empty", window.textBox("textAreaChat").text().equals(""));
+	  }
+	  
+	  @Test
+	  public void test_listUsers() throws InterruptedException {
+		  chatClient.connectToServer();
+		  chatClient.login("testUser");
+		  Thread.sleep(1500);
+		  String[] usersArray = window.list("listUsers").contents();
+		  assertEquals("checking if contains new user", "testUser", usersArray[0]);
+		  chatClient.disconnect();
 	  }
 	  
 	  @After

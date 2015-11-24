@@ -32,7 +32,7 @@ public class ChatClientTest {
 		Path currentRelativePath = Paths.get(""); 
 		String s = currentRelativePath.toAbsolutePath().toString(); 
 		System.out.println("Current relative path is: " + s);
-		Process proc = Runtime.getRuntime().exec("java -jar " + s + "\\chatServer.jar");
+		Process proc = Runtime.getRuntime().exec("java -jar " + s + "/chatServer.jar");
 		chatClient.connectToServer();
 		
 		chatClient.login("testUser");

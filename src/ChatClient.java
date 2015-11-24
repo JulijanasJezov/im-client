@@ -89,7 +89,6 @@ public class ChatClient {
 	}
 	
 	public void list() {
-		String[] users = null;
 		checkServerConnection();
 		if (!serverConnection) return;
 		

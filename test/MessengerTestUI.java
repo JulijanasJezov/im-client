@@ -38,6 +38,7 @@ public class MessengerTestUI {
 		  assertEquals("checking the send button text", "Send", window.button("btnSend").text());
 		  assertEquals("checking the username label text", "Users", window.label("lblUsers").text());
 		  assertEquals("checking the message label text", "Message", window.label("lblMessage").text());
+		  assertEquals("checking the logged in label text", "Logged in as: null", window.label("lblLogged").text());
 		  assertEquals("checking the chat label text", "Chat", window.label("lblChat").text());
 		  String[] usersArray = window.list("listUsers").contents();
 		  assertTrue("checking the list is empty", usersArray.length == 0);

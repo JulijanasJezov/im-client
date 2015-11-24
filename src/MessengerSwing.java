@@ -19,6 +19,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
+import java.awt.Color;
 
 public class MessengerSwing extends JFrame {
 
@@ -29,6 +30,7 @@ public class MessengerSwing extends JFrame {
 	private static DefaultListModel<String> listModel;
 	private static JTextArea textAreaChat;
 	private String pmUser;
+	private JLabel lblLogged;
 
 	public MessengerSwing() {
 		listModel = new DefaultListModel<String>();
@@ -66,6 +68,8 @@ public class MessengerSwing extends JFrame {
 					txtFieldMessage.setText("");
 					if (!chatClient.isServerConnectionEstablished()) {
 						addBroadcastMessage("You have been disconnected from the server");
+						lblLogged.setText("Disconnected");
+						lblLogged.setForeground(Color.RED);
 						return;
 					}
 					
@@ -115,7 +119,7 @@ public class MessengerSwing extends JFrame {
 		scrollPaneChat.setViewportView(textAreaChat);
 		
 		JScrollPane scrollPaneUsers = new JScrollPane();
-		scrollPaneUsers.setBounds(10, 34, 143, 391);
+		scrollPaneUsers.setBounds(10, 34, 143, 366);
 		contentPane.add(scrollPaneUsers);
 		
 		listUsers = new JList<String>();
@@ -123,6 +127,14 @@ public class MessengerSwing extends JFrame {
 		scrollPaneUsers.setViewportView(listUsers);
 		listUsers.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		listUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		lblLogged = new JLabel("Logged");
+		lblLogged.setForeground(new Color(0, 128, 0));
+		lblLogged.setName("lblLogged");
+		lblLogged.setFont(new Font("Corbel", Font.PLAIN, 12));
+		lblLogged.setBounds(10, 405, 143, 14);
+		lblLogged.setText("Logged in as: " + chatClient.getCurrentUser());
+		contentPane.add(lblLogged);
 		
 		listUsers.addListSelectionListener(new ListSelectionListener() {
             @Override

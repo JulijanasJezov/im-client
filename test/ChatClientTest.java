@@ -38,6 +38,8 @@ public class ChatClientTest {
 	    }, "manage users");
 		serverRun.start();
 		
+		Thread.sleep(1000);
+		
 		chatClient.connectToServer();
 		
 		chatClient.login("testUser");

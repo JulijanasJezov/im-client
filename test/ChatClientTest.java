@@ -1,6 +1,12 @@
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.swing.filechooser.FileSystemView;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,7 +29,10 @@ public class ChatClientTest {
 
 	@Test
 	public void test_loggedIn() throws IOException, InterruptedException {
-		Process proc = Runtime.getRuntime().exec("java -jar chatServer.jar");
+		Path currentRelativePath = Paths.get(""); 
+		String s = currentRelativePath.toAbsolutePath().toString(); 
+		System.out.println("Current relative path is: " + s);
+		Process proc = Runtime.getRuntime().exec("java -jar " + s + "\\chatServer.jar");
 		chatClient.connectToServer();
 		
 		chatClient.login("testUser");

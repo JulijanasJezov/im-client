@@ -18,6 +18,7 @@ public class ChatClient {
 	final static int PORT = 9000;
 	final static String HOST = "localhost";
 	private Thread listener;
+	private String currentUser;
 	
 	private boolean isLoggedIn;
 	
@@ -49,6 +50,7 @@ public class ChatClient {
 		} 
 		
 		isLoggedIn = true;
+		currentUser = username;
 		setupListener();
 		return true;
 	}
@@ -114,6 +116,10 @@ public class ChatClient {
 	
 	public boolean isLoggedIn() {
 		return isLoggedIn;
+	}
+	
+	public String getCurrentUser() {
+		return currentUser;
 	}
 	
 	public String readLine() {

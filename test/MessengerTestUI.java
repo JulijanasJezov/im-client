@@ -4,7 +4,6 @@ import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.edt.GuiQuery;
 import org.assertj.swing.fixture.FrameFixture;
-import org.assertj.swing.fixture.JListFixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -35,7 +34,7 @@ public class MessengerTestUI {
 
 	  @Before
 	  public void openWindow() {
-	    MessengerSwing frame = GuiActionRunner.execute(new GuiQuery<MessengerSwing>() {
+		  MessengerSwing frame = GuiActionRunner.execute(new GuiQuery<MessengerSwing>() {
 	      protected MessengerSwing executeInEDT() {
 	        return new MessengerSwing();
 	      }
@@ -60,10 +59,10 @@ public class MessengerTestUI {
 	  }
 	  
 	  @Test
-	  public void test_listUsers() throws InterruptedException {
+	  public void test_list() throws InterruptedException {
 		  chatClient.connectToServer();
 		  chatClient.login("testUser");
-		  Thread.sleep(1500);
+		  Thread.sleep(1500); // wait for UI list to be updated
 		  String[] usersArray = window.list("listUsers").contents();
 		  assertEquals("checking if contains new user", "testUser", usersArray[0]);
 		  chatClient.disconnect();

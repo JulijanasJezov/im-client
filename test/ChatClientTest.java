@@ -1,13 +1,6 @@
 import static org.junit.Assert.*;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import javax.swing.filechooser.FileSystemView;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -50,11 +43,6 @@ public class ChatClientTest {
 		chatClient.login("testUser");
 		
 		assertTrue("checking if the user logged in", chatClient.isLoggedIn());
-	}
-	
-	@Test
-	public void test_list() {
-		chatClient.list();
 	}
 	
 }

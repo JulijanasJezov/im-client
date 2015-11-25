@@ -113,6 +113,7 @@ public class MessengerSwing extends JFrame {
 		
 		textAreaChat = new JTextArea();
 		textAreaChat.setLineWrap(true);
+		textAreaChat.setEditable(false);
 		textAreaChat.setName("textAreaChat");
 		DefaultCaret caret = (DefaultCaret)textAreaChat.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);

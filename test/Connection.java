@@ -51,7 +51,7 @@ public class Connection implements Runnable {
 	
 	private void validateMessage(String message) {
 		
-		if(message.length() < 4 || message.trim().equals("")){
+		if(message == null || message.length() < 4 || message.trim().equals("")){
 			sendOverConnection ("BAD invalid command to server");
 		} else {
 			switch(message.substring(0,4)){

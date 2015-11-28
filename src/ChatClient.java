@@ -84,6 +84,9 @@ public class ChatClient {
 		checkServerConnection();
 		if (!serverConnection) return;
 		
+		currentUser = null;
+		isLoggedIn = false;
+		
 		out.println("QUIT");
 		readLine();
 	}
@@ -150,19 +153,6 @@ public class ChatClient {
 			System.out.println("Failed to connect to the server at " + HOST + PORT);
 		} catch (IOException ioe) {
 			System.out.println("Failed to connect to the server at " + HOST + PORT);
-		}
-	}
-	
-	public void disconnect() {
-		if (!serverConnection) return;
-		serverConnection = false;
-		currentUser = null;
-		isLoggedIn = false;
-		
-		try {
-			socket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 }

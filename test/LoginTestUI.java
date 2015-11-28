@@ -1,50 +1,128 @@
-import static org.junit.Assert.*;
+import java.awt.Component;
 
-import java.awt.Color;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
-import static org.assertj.swing.core.MouseButton.LEFT_BUTTON;
-import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
-import org.assertj.swing.edt.GuiActionRunner;
-import org.assertj.swing.edt.GuiQuery;
-import org.assertj.swing.fixture.ColorFixture;
-import org.assertj.swing.fixture.FrameFixture;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class LoginTestUI {
-	
-	private FrameFixture window;
+import abbot.finder.ComponentNotFoundException;
+import abbot.finder.Matcher;
+import abbot.finder.MultipleComponentsFoundException;
+import junit.extensions.abbot.ComponentTestFixture;
 
-	  @BeforeClass
-	  public static void initialise() {
-	    FailOnThreadViolationRepaintManager.install();
-	  }
+public class LoginTestUI extends ComponentTestFixture {
+	private LoginSwing login;
 
-	  @Before
-	  public void openWindow() {
-	    LoginSwing frame = GuiActionRunner.execute(new GuiQuery<LoginSwing>() {
-	      protected LoginSwing executeInEDT() {
-	        return new LoginSwing();
-	      }
+	@SuppressWarnings("deprecation")
+	@Before
+	public void setUp() {
+		login = new LoginSwing();
+        login.show();
+	}
+
+	@Test
+	public void test_initialWindow() throws ComponentNotFoundException, MultipleComponentsFoundException {
+		JTextField textField = (JTextField)getFinder().find(new Matcher() {
+					@Override
+					public boolean matches(Component c) {
+						return c instanceof JTextField;
+					}
+		        });
+		assertTrue("checking the message textbox is empty", textField.getText().equals(""));
+		
+		JButton btnLogin = (JButton)getFinder().find(new Matcher() {
+	        public boolean matches(Component c) {
+	            return c instanceof JButton && ((JButton)c).getName().equals("btnLogin");
+	        }
 	    });
-	    
-	    window = new FrameFixture(frame);
-	    window.show();
-	  }
-
-	  @Test
-	  public void test_initialWindow() {
-		  String result = window.textBox("txtFieldMessage").text();
-		  assertTrue("checking the message textbox is empty", result.equals(""));
-		  assertEquals("checking the send button text", "Send", window.button("btnLSend").text());
-		  assertEquals("checking the list label text", "Users", window.label("lblUsers").text());
-	  }
+		assertEquals("checking the send button text", "Login", btnLogin.getText());
+		
+		JLabel lblVal = (JLabel)getFinder().find(new Matcher() {
+			@Override
+			public boolean matches(Component c) {
+				return c instanceof JLabel && ((JLabel)c).getName().equals("lblValUsername");
+			}
+        });
+		
+		assertFalse("checking if validation label is hidden", lblVal.isVisible());
+		
+		JLabel lblFailed = (JLabel)getFinder().find(new Matcher() {
+			@Override
+			public boolean matches(Component c) {
+				return c instanceof JLabel && ((JLabel)c).getName().equals("lblFailed");
+			}
+        });
+		
+		assertFalse("checking if failed connection label is hidden", lblFailed.isVisible());
+		
+		JLabel lblUsername = (JLabel)getFinder().find(new Matcher() {
+			@Override
+			public boolean matches(Component c) {
+				return c instanceof JLabel && ((JLabel)c).getName().equals("lblUsername");
+			}
+        });
+		
+		assertTrue("checking if username label is shown", lblUsername.isVisible());
+		
+		assertTrue("checking the text of username label", lblUsername.getText().equals("Username"));
+	}
 	  
-	  @After
-	  public void closeWindow() {
-	    window.cleanUp();
-	  }
+	@Test
+	public void test_noUsername() throws ComponentNotFoundException, MultipleComponentsFoundException {
+		JButton btnLogin = (JButton)getFinder().find(new Matcher() {
+	        public boolean matches(Component c) {
+	            return c instanceof JButton && ((JButton)c).getName().equals("btnLogin");
+	        }
+	    });
+		
+		btnLogin.doClick();
+		
+		JLabel lblVal = (JLabel)getFinder().find(new Matcher() {
+			@Override
+			public boolean matches(Component c) {
+				return c instanceof JLabel && ((JLabel)c).getName().equals("lblValUsername");
+			}
+        });
+		
+		assertTrue("checking if label became visible", lblVal.isVisible());
+	}
 	
+	@Test
+	public void test_noConnection() throws ComponentNotFoundException, MultipleComponentsFoundException {
+		JTextField textField = (JTextField)getFinder().find(new Matcher() {
+			@Override
+			public boolean matches(Component c) {
+				return c instanceof JTextField;
+			}
+        });
+		
+		textField.setText("testUser");
+		
+		JButton btnLogin = (JButton)getFinder().find(new Matcher() {
+	        public boolean matches(Component c) {
+	            return c instanceof JButton && ((JButton)c).getName().equals("btnLogin");
+	        }
+	    });
+		
+		btnLogin.doClick();
+		
+		JLabel lblFailed = (JLabel)getFinder().find(new Matcher() {
+			@Override
+			public boolean matches(Component c) {
+				return c instanceof JLabel && ((JLabel)c).getName().equals("lblFailed");
+			}
+        });
+		
+		assertTrue("checking if failed connection label has shown", lblFailed.isVisible());
+	}
+	
+	@SuppressWarnings("deprecation")
+	@After
+	public void dispose() {
+		login.hide();
+		login.dispose();
+	}
 }

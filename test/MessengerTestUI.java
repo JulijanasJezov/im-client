@@ -1,9 +1,3 @@
-import static org.junit.Assert.*;
-
-import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
-import org.assertj.swing.edt.GuiActionRunner;
-import org.assertj.swing.edt.GuiQuery;
-import org.assertj.swing.fixture.FrameFixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -11,7 +5,7 @@ import org.junit.Test;
 
 public class MessengerTestUI {
 
-	private FrameFixture window;
+	/*private FrameFixture window;
 	private static Server server;
 	private static ChatClient chatClient;
 	
@@ -71,6 +65,6 @@ public class MessengerTestUI {
 	  @After
 	  public void closeWindow() {
 	    window.cleanUp();
-	  }
+	  }*/
 
 }

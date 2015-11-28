@@ -19,7 +19,7 @@ public class ChatClientTest {
 			public void run() {
 				server = new Server(9000, false);
 			}
-	    }, "manage users");
+	    }, "server");
 		serverRun.start();
 		
 		Thread.sleep(1000); // Allow some time for server to start

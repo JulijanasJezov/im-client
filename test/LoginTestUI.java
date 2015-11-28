@@ -17,7 +17,6 @@ public class LoginTestUI extends ComponentTestFixture {
 	private LoginSwing login;
 
 	@SuppressWarnings("deprecation")
-	@Before
 	public void setUp() {
 		login = new LoginSwing();
         login.show();
@@ -119,10 +118,7 @@ public class LoginTestUI extends ComponentTestFixture {
 		assertTrue("checking if failed connection label has shown", lblFailed.isVisible());
 	}
 	
-	@SuppressWarnings("deprecation")
-	@After
-	public void dispose() {
-		login.hide();
+	public void tearDown() {
 		login.dispose();
 	}
 }

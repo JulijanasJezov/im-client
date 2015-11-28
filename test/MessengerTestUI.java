@@ -17,7 +17,6 @@ import junit.extensions.abbot.ComponentTestFixture;
 public class MessengerTestUI extends ComponentTestFixture {
 
 	private MessengerSwing messenger;
-	private static Server server;
 	private static ChatClient chatClient;
 	private Thread serverRun;
 
@@ -176,7 +175,7 @@ public class MessengerTestUI extends ComponentTestFixture {
 		  serverRun = new Thread(new Runnable() {
 			  @Override
 			  public void run() {
-				  server = new Server(9000, false);
+				  new Server(9000, false);
 			  }
 		  }, "server");
 		  serverRun.start();

@@ -18,7 +18,7 @@ public class LoginSwing extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtFieldUsername;
-	private ChatClient chatClient;
+	private ChatNetwork chatClient;
 	private static LoginSwing frame;
 
 	public static void main(String[] args) {
@@ -35,7 +35,7 @@ public class LoginSwing extends JFrame {
 	}
 
 	public LoginSwing() {
-		chatClient = ChatClient.getInstance();
+		chatClient = ChatNetwork.getInstance();
 		
 		addWindowListener(new WindowAdapter() {
 			@Override

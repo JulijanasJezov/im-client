@@ -4,8 +4,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import abbot.finder.ComponentNotFoundException;

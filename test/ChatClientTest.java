@@ -6,13 +6,13 @@ import org.junit.Test;
 
 public class ChatClientTest {
 
-	private static ChatClient chatClient;
+	private static ChatNetwork chatNetwork;
     private static Server server;
 	
 	@BeforeClass
 	public static void init() throws InterruptedException {
-		chatClient = ChatClient.getInstance();
-		assertFalse("checking if the connection is established", chatClient.isServerConnectionEstablished());
+		chatNetwork = ChatNetwork.getInstance();
+		assertFalse("checking if the connection is established", chatNetwork.isServerConnectionEstablished());
 		
 		Thread serverRun = new Thread(new Runnable() {
 			@Override
@@ -24,25 +24,25 @@ public class ChatClientTest {
 		
 		Thread.sleep(1000); // Allow some time for server to start
 
-		chatClient.connectToServer();
+		chatNetwork.connectToServer();
 	}
 	
 	@Test
 	public void test_connected() {
-		assertTrue("check if connected to the server", chatClient.isServerConnectionEstablished());
+		assertTrue("check if connected to the server", chatNetwork.isServerConnectionEstablished());
 	}
 	
 	@Test
 	public void test_notLoggedIn() {
-		assertFalse("checking if the user logged in", chatClient.isLoggedIn());
-		assertTrue("checking the current user", chatClient.getCurrentUser() == null);
+		assertFalse("checking if the user logged in", chatNetwork.isLoggedIn());
+		assertTrue("checking the current user", chatNetwork.getCurrentUser() == null);
 	}
 
 	@Test
 	public void test_loggedIn() throws IOException, InterruptedException {
-		chatClient.login("testUser");
+		chatNetwork.login("testUser");
 		
-		assertTrue("checking if the user logged in", chatClient.isLoggedIn());
+		assertTrue("checking if the user logged in", chatNetwork.isLoggedIn());
 	}
 	
 }

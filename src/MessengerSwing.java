@@ -24,7 +24,7 @@ import java.awt.Color;
 public class MessengerSwing extends JFrame {
 
 	private JPanel contentPane;
-	private ChatClient chatClient;
+	private ChatNetwork chatClient;
 	private JTextField txtFieldMessage;
 	private static JList<String> listUsers;
 	private static DefaultListModel<String> listModel;
@@ -34,7 +34,7 @@ public class MessengerSwing extends JFrame {
 
 	public MessengerSwing() {
 		listModel = new DefaultListModel<String>();
-		chatClient = ChatClient.getInstance();
+		chatClient = ChatNetwork.getInstance();
 		
 		addWindowListener(new WindowAdapter() {
 			@Override

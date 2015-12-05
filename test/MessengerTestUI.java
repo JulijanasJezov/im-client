@@ -17,7 +17,7 @@ import junit.extensions.abbot.ComponentTestFixture;
 public class MessengerTestUI extends ComponentTestFixture {
 
 	private MessengerSwing messenger;
-	private static ChatClient chatClient;
+	private static ChatNetwork chatNetwork;
 	private Thread serverRun;
 
 	@SuppressWarnings("deprecation")
@@ -30,10 +30,10 @@ public class MessengerTestUI extends ComponentTestFixture {
 	  public void test_initialWindow() throws ComponentNotFoundException, MultipleComponentsFoundException, InterruptedException {
 		  runServer();
 		  
-		  chatClient.connectToServer();
+		  chatNetwork.connectToServer();
 		  Thread.sleep(1000); // Allow some time for server to start
 			
-		  chatClient.login("testUser");
+		  chatNetwork.login("testUser");
 		  
 		  JTextField messangeField = (JTextField)getFinder().find(new Matcher() {
 				@Override
@@ -109,10 +109,10 @@ public class MessengerTestUI extends ComponentTestFixture {
 	  public void test_list() throws InterruptedException, ComponentNotFoundException, MultipleComponentsFoundException {
 		  runServer();
 		 
-		  chatClient.connectToServer();
+		  chatNetwork.connectToServer();
 		  Thread.sleep(1000); // Allow some time for server to start
 			
-		  chatClient.login("testUser");
+		  chatNetwork.login("testUser");
 		  Thread.sleep(1000); // wait for UI list to be updated
 		  
 		  @SuppressWarnings("unchecked")
@@ -136,10 +136,10 @@ public class MessengerTestUI extends ComponentTestFixture {
 	  public void test_sendingMessage() throws InterruptedException, ComponentNotFoundException, MultipleComponentsFoundException {
 		  runServer();
 		  
-		  chatClient.connectToServer();
+		  chatNetwork.connectToServer();
 		  Thread.sleep(1000); // Allow some time for server to start
 			
-		  chatClient.login("testUser");
+		  chatNetwork.login("testUser");
 		  Thread.sleep(1000);
 		  JTextField messageField = (JTextField)getFinder().find(new Matcher() {
 				@Override
@@ -153,7 +153,7 @@ public class MessengerTestUI extends ComponentTestFixture {
 		            return c instanceof JButton && ((JButton)c).getName().equals("btnSend");
 		        }
 		  });
-		  assertTrue(chatClient.isLoggedIn());
+		  assertTrue(chatNetwork.isLoggedIn());
 		  messageField.setText("Hello");
 		  
 		  btnSend.doClick();
@@ -170,8 +170,8 @@ public class MessengerTestUI extends ComponentTestFixture {
 	  }
 	  
 	  private void runServer() {
-		  chatClient = ChatClient.getInstance();
-		  if (chatClient.isServerConnectionEstablished()) return;
+		  chatNetwork = ChatNetwork.getInstance();
+		  if (chatNetwork.isServerConnectionEstablished()) return;
 		  serverRun = new Thread(new Runnable() {
 			  @Override
 			  public void run() {

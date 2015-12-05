@@ -8,8 +8,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-public class ChatClient {
-	private static ChatClient instance = null;
+public class ChatNetwork {
+	private static ChatNetwork instance = null;
 	
 	private boolean serverConnection;
 	private static BufferedReader in;
@@ -22,14 +22,14 @@ public class ChatClient {
 	
 	private boolean isLoggedIn;
 	
-	protected ChatClient() { 
+	protected ChatNetwork() { 
 		isLoggedIn = false;
 		connectToServer();
 	}
 	   
-	public static ChatClient getInstance() {
+	public static ChatNetwork getInstance() {
 		if(instance == null) {
-			instance = new ChatClient();
+			instance = new ChatNetwork();
 	    }
 	    return instance;
 	}
